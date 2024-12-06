@@ -1,11 +1,11 @@
-{C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd}
+{C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd}
 Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
--- Compiling entity TrafficLightController
--- Compiling architecture Behavioral of TrafficLightController
+-- Compiling entity TrafficLightController_tb
+-- Compiling architecture Behavioral of TrafficLightController_tb
 
 } {} {}} {.\TrafficLightController.vhd} {1 {vcom -work work -2002 -explicit -stats=none {.\TrafficLightController.vhd}
 Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020

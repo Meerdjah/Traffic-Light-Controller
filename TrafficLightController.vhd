@@ -7,10 +7,34 @@ entity TrafficLightController is
         clk      : in  STD_LOGIC;
         reset    : in  STD_LOGIC;
         toggle   : in  STD_LOGIC;
-        red      : out STD_LOGIC;
-        yellow   : out STD_LOGIC;
-        green    : out STD_LOGIC;
-        light_sel: out STD_LOGIC_VECTOR(1 downto 0)
+
+        -- north
+        red_north  : out STD_LOGIC;
+        yellow_north: out STD_LOGIC;
+        green_north: out STD_LOGIC;
+        green_left_north : out STD_LOGIC;
+        red_left_north   : out STD_LOGIC;
+
+        -- east
+        red_east   : out STD_LOGIC;
+        yellow_east: out STD_LOGIC;
+        green_east : out STD_LOGIC;
+        green_left_east  : out STD_LOGIC;
+        red_left_east    : out STD_LOGIC;
+
+        -- south
+        red_south  : out STD_LOGIC;
+        yellow_south: out STD_LOGIC;
+        green_south: out STD_LOGIC;
+        green_left_south : out STD_LOGIC;
+        red_left_south   : out STD_LOGIC;
+
+        -- west
+        red_west   : out STD_LOGIC;
+        yellow_west: out STD_LOGIC;
+        green_west : out STD_LOGIC;
+        green_left_west  : out STD_LOGIC;
+        red_left_west    : out STD_LOGIC
     );
 end TrafficLightController;
 
@@ -78,54 +102,66 @@ begin
     -- Output logic
     process(current_state, light_index)
     begin
-        -- Default semua merah
-        red <= '1';
-        yellow <= '0';
-        green <= '0';
-        light_sel <= light_index;
+        -- Default semua lampu merah
+        red_north <= '1'; yellow_north <= '0'; green_north <= '0';
+        red_east  <= '1'; yellow_east  <= '0'; green_east  <= '0';
+        red_south <= '1'; yellow_south <= '0'; green_south <= '0';
+        red_west  <= '1'; yellow_west  <= '0'; green_west  <= '0';
 
+        -- Default semua lampu belok kiri
+        green_left_north <= '0'; red_left_north  <= '1';
+        green_left_east  <= '0'; red_left_east   <= '1';
+        green_left_south <= '0'; red_left_south  <= '1';
+        green_left_west  <= '0'; red_left_west  <= '1';
+        
         -- Lampu untuk arah yang aktif
         case light_index is
             when "00" => -- Utara
                 if current_state = GREEN_STATE then
-                    red <= '0';
-                    green <= '1';
+                    red_north <= '0'; green_north <= '1';
+                    green_left_north <= '1'; red_left_north <= '0';
+                    green_left_east  <= '1'; red_left_east  <= '0';
                 elsif current_state = YELLOW_STATE then
-                    red <= '0';
-                    yellow <= '1';
+                    red_north <= '0'; yellow_north <= '1';
                 end if;
 
             when "01" => -- Timur
                 if current_state = GREEN_STATE then
-                    red <= '0';
-                    green <= '1';
+                    red_east <= '0'; green_east <= '1';
+                    green_left_east  <= '1'; red_left_east  <= '0';
+                    green_left_south <= '1'; red_left_south <= '0';
                 elsif current_state = YELLOW_STATE then
-                    red <= '0';
-                    yellow <= '1';
+                    red_east <= '0'; yellow_east <= '1';
                 end if;
 
             when "10" => -- Selatan
                 if current_state = GREEN_STATE then
-                    red <= '0';
-                    green <= '1';
+                    red_south <= '0'; green_south <= '1';
+                    green_left_south <= '1'; red_left_south <= '0';
+                    green_left_west  <= '1'; red_left_west  <= '0';
                 elsif current_state = YELLOW_STATE then
-                    red <= '0';
-                    yellow <= '1';
+                    red_south <= '0'; yellow_south <= '1';
                 end if;
 
             when "11" => -- Barat
                 if current_state = GREEN_STATE then
-                    red <= '0';
-                    green <= '1';
+                    red_west <= '0'; green_west <= '1';
+                    green_left_west  <= '1'; red_left_west  <= '0';
+                    green_left_north <= '1'; red_left_north <= '0';
                 elsif current_state = YELLOW_STATE then
-                    red <= '0';
-                    yellow <= '1';
+                    red_west <= '0'; yellow_west <= '1';
                 end if;
 
             when others =>
-                red <= '1';
-                yellow <= '0';
-                green <= '0';
+                red_north <= '1'; yellow_north <= '0'; green_north <= '0';
+                red_east  <= '1'; yellow_east  <= '0'; green_east  <= '0';
+                red_south <= '1'; yellow_south <= '0'; green_south <= '0';
+                red_west  <= '1'; yellow_west  <= '0'; green_west  <= '0';
+
+                green_left_north <= '0'; red_left_north  <= '1';
+                green_left_east  <= '0'; red_left_east   <= '1';
+                green_left_south <= '0'; red_left_south  <= '1';
+                green_left_west  <= '0'; red_left_west  <= '1';
         end case;
     end process;
 end Behavioral;
