@@ -41,7 +41,7 @@ end TrafficLightController;
 architecture Behavioral of TrafficLightController is
 
     type State_Type is (IDLE_STATE, RED_STATE, YELLOW_STATE, GREEN_STATE);
-    signal current_state, next_state: State_Type;
+    signal previous_state, current_state, next_state: State_Type;
 
     signal light_index : STD_LOGIC_VECTOR(1 downto 0) := "00";
     signal counter : INTEGER range 0 to 1 := 0;
@@ -52,12 +52,14 @@ begin
     begin
         if reset = '1' then
             current_state <= IDLE_STATE;
+            previous_state <= IDLE_STATE;
             counter <= 0;
             light_index <= "00";
         elsif rising_edge(clk) then
             if toggle = '1' then
                 if counter = 1 then
                     counter <= 0;
+                    previous_state <= current_state; -- menyimpan state sebelumnya
                     current_state <= next_state;
 
                     -- Pergantian arah setelah siklus penuh
@@ -69,13 +71,14 @@ begin
                 end if;
             else
                 current_state <= IDLE_STATE;
+                previous_state <= IDLE_STATE;
                 counter <= 0;
             end if;
         end if;
     end process;
 
     -- Proses untuk transisi state
-    process(current_state)
+    process(previous_state, current_state)
     begin
         case current_state is
             when IDLE_STATE =>
@@ -89,10 +92,14 @@ begin
                 next_state <= YELLOW_STATE;
 
             when YELLOW_STATE =>
-                next_state <= GREEN_STATE;
+                if previous_state = RED_STATE then
+                    next_state <= GREEN_STATE;
+                else
+                    next_state <= RED_STATE;
+                end if;
 
             when GREEN_STATE =>
-                next_state <= RED_STATE;
+                next_state <= YELLOW_STATE;
 
             when others =>
                 next_state <= IDLE_STATE;

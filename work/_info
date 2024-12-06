@@ -10,11 +10,11 @@ z2
 cModel Technology
 dC:/intelFPGA/20.1
 Etrafficlightcontroller
-Z0 w1733448696
+Z0 w1733512533
 Z1 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
 Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 41
+!i122 53
 Z4 dC:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller
 Z5 8C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd
 Z6 FC:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd
@@ -24,9 +24,9 @@ VSH^O@lhDDBHQEgjdcKB6S0
 !s100 ic9;W@`[_=Rj656z8;2lK0
 Z7 OV;C;2020.1;71
 32
-Z8 !s110 1733448700
+Z8 !s110 1733515637
 !i10b 1
-Z9 !s108 1733448700.000000
+Z9 !s108 1733515637.000000
 Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd|
 Z11 !s107 C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd|
 !i113 1
@@ -36,12 +36,12 @@ Abehavioral
 R1
 R2
 R3
-Z14 DEx4 work 22 trafficlightcontroller 0 22 SH^O@lhDDBHQEgjdcKB6S0
-!i122 41
+DEx4 work 22 trafficlightcontroller 0 22 SH^O@lhDDBHQEgjdcKB6S0
+!i122 53
 l49
-Z15 L41 127
-V6<L`PkiTaKl:FVa^K53jS0
-!s100 4HbiSb[T`:TljHY2UoY040
+L41 134
+V7X<ABWOF^SBB=e>EmRWJ<1
+!s100 EK>;DI2bDLO8;Y=6laPhV3
 R7
 32
 R8
@@ -53,25 +53,25 @@ R11
 R12
 R13
 Etrafficlightcontroller_tb
-Z16 w1733445101
+Z14 w1733526826
 R1
 R2
 R3
-!i122 37
+!i122 63
 R4
-Z17 8C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd
-Z18 FC:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd
+Z15 8C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd
+Z16 FC:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd
 l0
 L5 1
-VYR:cKGlmeXH4g3SH<AzVl3
-!s100 J0Ff93^]TVPIJl0dA8ZS`2
+Vf18e;Z;Z8XU`<E05>S3F83
+!s100 [KbJIDP^UZRIJlZc9bn4j0
 R7
 32
-Z19 !s110 1733445114
+Z17 !s110 1733526836
 !i10b 1
-Z20 !s108 1733445114.000000
-Z21 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd|
-Z22 !s107 C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd|
+Z18 !s108 1733526836.000000
+Z19 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd|
+Z20 !s107 C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd|
 !i113 1
 R12
 R13
@@ -79,19 +79,41 @@ Abehavioral
 R1
 R2
 R3
-DEx4 work 25 trafficlightcontroller_tb 0 22 YR:cKGlmeXH4g3SH<AzVl3
-!i122 37
-l35
-L9 74
-VR04B>4>]a4jPSL99<_L7@1
-!s100 F6Afbe1g[iI^>^Vb3k3h_1
+Z21 DEx4 work 25 trafficlightcontroller_tb 0 22 f18e;Z;Z8XU`<E05>S3F83
+!i122 63
+l83
+L8 133
+V]iF1_7WIVaWMHF2?a:84`3
+!s100 oD@JN_kIE9?2goElmA;YF3
 R7
 32
-R19
+R17
 !i10b 1
+R18
+R19
 R20
-R21
-R22
 !i113 1
 R12
 R13
+Abehavior
+DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+R2
+R3
+DEx4 work 25 trafficlightcontroller_tb 0 22 k]XY1A_jCo2TDhhAG8ZE[2
+!i122 56
+l78
+L9 131
+V40dJAaA]5h7?[a0fImOWQ2
+!s100 d`0;Ob1YPTEW]kB<AESKO0
+R7
+32
+!s110 1733516546
+!i10b 1
+!s108 1733516546.000000
+R19
+R20
+!i113 1
+R12
+R13
+w1733515732

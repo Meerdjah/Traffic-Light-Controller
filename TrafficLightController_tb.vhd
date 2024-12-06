@@ -3,80 +3,138 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity TrafficLightController_tb is
--- Testbench tidak memiliki port
 end TrafficLightController_tb;
 
 architecture Behavioral of TrafficLightController_tb is
-    -- Komponen yang akan diuji
+
+    -- Component Declaration
     component TrafficLightController
         Port (
-            clk      : in  STD_LOGIC;
-            reset    : in  STD_LOGIC;
-            toggle   : in  STD_LOGIC;
-            red      : out STD_LOGIC;
-            yellow   : out STD_LOGIC;
-            green    : out STD_LOGIC;
-            light_sel: out STD_LOGIC_VECTOR(1 downto 0)
+            clk            : in  STD_LOGIC;
+            reset          : in  STD_LOGIC;
+            toggle         : in  STD_LOGIC;
+
+            -- North
+            red_north      : out STD_LOGIC;
+            yellow_north   : out STD_LOGIC;
+            green_north    : out STD_LOGIC;
+            green_left_north : out STD_LOGIC;
+            red_left_north : out STD_LOGIC;
+
+            -- East
+            red_east       : out STD_LOGIC;
+            yellow_east    : out STD_LOGIC;
+            green_east     : out STD_LOGIC;
+            green_left_east : out STD_LOGIC;
+            red_left_east  : out STD_LOGIC;
+
+            -- South
+            red_south      : out STD_LOGIC;
+            yellow_south   : out STD_LOGIC;
+            green_south    : out STD_LOGIC;
+            green_left_south : out STD_LOGIC;
+            red_left_south : out STD_LOGIC;
+
+            -- West
+            red_west       : out STD_LOGIC;
+            yellow_west    : out STD_LOGIC;
+            green_west     : out STD_LOGIC;
+            green_left_west : out STD_LOGIC;
+            red_left_west  : out STD_LOGIC
         );
     end component;
 
-    -- Sinyal untuk menghubungkan testbench ke UUT
-    signal clk_tb      : STD_LOGIC := '0';
-    signal reset_tb    : STD_LOGIC := '0';
-    signal toggle_tb   : STD_LOGIC := '0';
-    signal red_tb      : STD_LOGIC;
-    signal yellow_tb   : STD_LOGIC;
-    signal green_tb    : STD_LOGIC;
-    signal light_sel_tb: STD_LOGIC_VECTOR(1 downto 0);
+    -- Signals for Testbench
+    signal clk            : STD_LOGIC := '0';
+    signal reset          : STD_LOGIC := '0';
+    signal toggle         : STD_LOGIC := '0';
 
-    -- Clock period untuk simulasi
-    constant clk_period : time := 1 ps;
+    -- North Signals
+    signal red_north      : STD_LOGIC;
+    signal yellow_north   : STD_LOGIC;
+    signal green_north    : STD_LOGIC;
+    signal green_left_north : STD_LOGIC;
+    signal red_left_north : STD_LOGIC;
+
+    -- East Signals
+    signal red_east       : STD_LOGIC;
+    signal yellow_east    : STD_LOGIC;
+    signal green_east     : STD_LOGIC;
+    signal green_left_east : STD_LOGIC;
+    signal red_left_east  : STD_LOGIC;
+
+    -- South Signals
+    signal red_south      : STD_LOGIC;
+    signal yellow_south   : STD_LOGIC;
+    signal green_south    : STD_LOGIC;
+    signal green_left_south : STD_LOGIC;
+    signal red_left_south : STD_LOGIC;
+
+    -- West Signals
+    signal red_west       : STD_LOGIC;
+    signal yellow_west    : STD_LOGIC;
+    signal green_west     : STD_LOGIC;
+    signal green_left_west : STD_LOGIC;
+    signal red_left_west  : STD_LOGIC;
+
+    -- Clock period definition
+    constant CLK_PERIOD : time := 10 ns;
 
 begin
-    -- Instansiasi UUT
-    UUT: TrafficLightController
-        Port map (
-            clk      => clk_tb,
-            reset    => reset_tb,
-            toggle   => toggle_tb,
-            red      => red_tb,
-            yellow   => yellow_tb,
-            green    => green_tb,
-            light_sel=> light_sel_tb
-        );
 
-    -- Clock generator
+    -- Instantiate the Unit Under Test (UUT)
+    uut: TrafficLightController PORT MAP (
+        clk            => clk,
+        reset          => reset,
+        toggle         => toggle,
+
+        -- North
+        red_north      => red_north,
+        yellow_north   => yellow_north,
+        green_north    => green_north,
+        green_left_north => green_left_north,
+        red_left_north => red_left_north,
+
+        -- East
+        red_east       => red_east,
+        yellow_east    => yellow_east,
+        green_east     => green_east,
+        green_left_east => green_left_east,
+        red_left_east  => red_left_east,
+
+        -- South
+        red_south      => red_south,
+        yellow_south   => yellow_south,
+        green_south    => green_south,
+        green_left_south => green_left_south,
+        red_left_south => red_left_south,
+
+        -- West
+        red_west       => red_west,
+        yellow_west    => yellow_west,
+        green_west     => green_west,
+        green_left_west => green_left_west,
+        red_left_west  => red_left_west
+    );
+
+    -- Clock process
     clk_process: process
     begin
-        while True loop
-            clk_tb <= '0';
-            wait for clk_period / 2;
-            clk_tb <= '1';
-            wait for clk_period / 2;
+        clk <= '0';
+        wait for CLK_PERIOD/2;
+        clk <= '1';
+        wait for CLK_PERIOD/2;
+    end process;
+
+    -- Stimulus process
+    stim_proc: process
+    begin
+        -- Test full cycle through all directions
+        for i in 0 to 3 loop 
+            toggle <= '1'; 
+            wait for CLK_PERIOD * 10; 
+            wait for CLK_PERIOD * 2; 
         end loop;
     end process;
 
-    -- Stimulus process untuk memberikan input
-    stimulus_process: process
-    begin
-        -- Reset sistem
-        reset_tb <= '1';
-        wait for clk_period * 2;  -- Tunggu 2 clock cycle
-        reset_tb <= '0';
-
-        -- Aktifkan toggle untuk memulai siklus lampu lalu lintas
-        toggle_tb <= '1';
-        wait for clk_period * 40; -- Tunggu untuk beberapa siklus lampu lalu lintas
-
-        -- Nonaktifkan toggle (lampu berhenti)
-        toggle_tb <= '0';
-        wait for clk_period * 20;  -- Tunggu beberapa waktu
-
-        -- Aktifkan kembali toggle
-        toggle_tb <= '1';
-        wait for clk_period * 40; -- Tunggu untuk beberapa siklus lampu lalu lintas
-
-        -- Akhiri simulasi
-        wait;
-    end process;
 end Behavioral;
