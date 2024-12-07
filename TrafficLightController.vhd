@@ -67,10 +67,12 @@ architecture Behavioral of TrafficLightController is
     signal pedestrian_counter : INTEGER range 0 to 255 := 0;
 
 begin
+    -- Main Process
     process(clk, reset)
     begin
         if reset = '1' then
             current_state <= IDLE_STATE;
+            previous_state <= IDLE_STATE;
             counter <= 0;
             pedestrian_counter <= 0;
             light_index <= "00";
@@ -78,13 +80,15 @@ begin
             if toggle = '1' then
                 if current_state = PEDESTRIAN_STATE then
                     if pedestrian_counter > 0 then
-                        pedestrian_counter <= pedestrian_counter - 1;
+                        pedestrian_counter <= pedestrian_counter + 1;
                     else
+                        previous_state <= current_state;
                         current_state <= next_state; -- Exit pedestrian state
                     end if;
                 else
                     if counter = 1 then
                         counter <= 0;
+                        previous_state <= current_state;
                         current_state <= next_state;
 
                         if current_state = GREEN_STATE and next_state = RED_STATE then
@@ -95,13 +99,14 @@ begin
                     end if;
                 end if;
             else
+                previous_state <= current_state;
                 current_state <= IDLE_STATE;
             end if;
         end if;
     end process;
 
     -- Transisi
-    process(current_state, Pedestrian_Button, light_index)
+    process(previous_state, current_state, Pedestrian_Button, light_index)
     begin
         case current_state is
             when IDLE_STATE =>
@@ -138,30 +143,90 @@ begin
         end case;
     end process;
 
+    -- Output
     process(current_state, light_index, pedestrian_counter)
     begin
-        -- Default pedestrian: red
+        -- Default lampu merah
+        red_north <= '1'; yellow_north <= '0'; green_north <= '0';
+        red_east  <= '1'; yellow_east  <= '0'; green_east  <= '0';
+        red_south <= '1'; yellow_south <= '0'; green_south <= '0';
+        red_west  <= '1'; yellow_west  <= '0'; green_west  <= '0';
+
+        -- Default lampu pedestrian
         green_pedestrian_north <= '0'; red_pedestrian_north <= '1';
         green_pedestrian_east  <= '0'; red_pedestrian_east  <= '1';
         green_pedestrian_south <= '0'; red_pedestrian_south <= '1';
-        green_pedestrian_west  <= '0'; red_pedestrian_west  <= '1';
+        green_pedestrian_west  <= '0'; red_pedestrian_west <= '1';
 
-        -- Masuk ke pedestrian state, lampu pedestrian menyala
+        -- Default lampu kiri
+        green_left_north <= '0'; red_left_north  <= '1';
+        green_left_east  <= '0'; red_left_east   <= '1';
+        green_left_south <= '0'; red_left_south  <= '1';
+        green_left_west  <= '0'; red_left_west  <= '1';
+
         if current_state = PEDESTRIAN_STATE then
             case light_index is
-                when "00" => -- North
+                when "00" => -- Utara
                     green_pedestrian_north <= '1'; red_pedestrian_north <= '0';
-                when "01" => -- East
+
+                when "01" => -- Timur
                     green_pedestrian_east <= '1'; red_pedestrian_east <= '0';
-                when "10" => -- South
+
+                when "10" => -- Selatan
                     green_pedestrian_south <= '1'; red_pedestrian_south <= '0';
-                when "11" => -- West
+
+                when "11" => -- Barat
                     green_pedestrian_west <= '1'; red_pedestrian_west <= '0';
-                when others =>
-                    green_pedestrian_north <= '0'; red_pedestrian_north <= '1';
+            end case;
+        else
+            case light_index is
+            when "00" => -- Utara
+                if current_state = GREEN_STATE then
+                    red_north <= '0'; green_north <= '1';
+                    green_left_north <= '1'; red_left_north <= '0';
+                    green_left_east  <= '1'; red_left_east  <= '0';
+                elsif current_state = YELLOW_STATE then
+                    red_north <= '0'; yellow_north <= '1';
+                end if;
+
+            when "01" => -- Timur
+                if current_state = GREEN_STATE then
+                    red_east <= '0'; green_east <= '1';
+                    green_left_east  <= '1'; red_left_east  <= '0';
+                    green_left_south <= '1'; red_left_south <= '0';
+                elsif current_state = YELLOW_STATE then
+                    red_east <= '0'; yellow_east <= '1';
+                end if;
+
+            when "10" => -- Selatan
+                if current_state = GREEN_STATE then
+                    red_south <= '0'; green_south <= '1';
+                    green_left_south <= '1'; red_left_south <= '0';
+                    green_left_west  <= '1'; red_left_west  <= '0';
+                elsif current_state = YELLOW_STATE then
+                    red_south <= '0'; yellow_south <= '1';
+                end if;
+
+            when "11" => -- Barat
+                if current_state = GREEN_STATE then
+                    red_west <= '0'; green_west <= '1';
+                    green_left_west  <= '1'; red_left_west  <= '0';
+                    green_left_north <= '1'; red_left_north <= '0';
+                elsif current_state = YELLOW_STATE then
+                    red_west <= '0'; yellow_west <= '1';
+                end if;
+
+            when others =>
+                red_north <= '1'; yellow_north <= '0'; green_north <= '0';
+                red_east  <= '1'; yellow_east  <= '0'; green_east  <= '0';
+                red_south <= '1'; yellow_south <= '0'; green_south <= '0';
+                red_west  <= '1'; yellow_west  <= '0'; green_west  <= '0';
+
+                green_left_north <= '0'; red_left_north  <= '1';
+                green_left_east  <= '0'; red_left_east   <= '1';
+                green_left_south <= '0'; red_left_south  <= '1';
+                green_left_west  <= '0'; red_left_west  <= '1';
             end case;
         end if;
     end process;
-
 end Behavioral;
-
