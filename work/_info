@@ -10,25 +10,25 @@ z2
 cModel Technology
 dC:/intelFPGA/20.1
 Etrafficlightcontroller
-Z0 w1732937645
+Z0 w1733551242
 Z1 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
 Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 3
+!i122 6
 Z4 dD:/College Material/Coding/PSD/FinPro
-Z5 8D:\College Material\Coding\PSD\FinPro\TrafficLightController.vhd
-Z6 FD:\College Material\Coding\PSD\FinPro\TrafficLightController.vhd
+Z5 8D:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd
+Z6 FD:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd
 l0
 L5 1
-V0;dUJT]0HWWIa[Ca7bhiZ1
-!s100 WRWRDoi9CIYGSnG8jJ@X03
+V::]E[?2ECRgmP@5hm1R8O3
+!s100 fojd9cBP?I0QAD8Ja6NZY1
 Z7 OV;C;2020.1;71
 32
-Z8 !s110 1732937649
+Z8 !s110 1733553583
 !i10b 1
-Z9 !s108 1732937649.000000
-Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|D:\College Material\Coding\PSD\FinPro\TrafficLightController.vhd|
-Z11 !s107 D:\College Material\Coding\PSD\FinPro\TrafficLightController.vhd|
+Z9 !s108 1733553583.000000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|D:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd|
+Z11 !s107 D:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd|
 !i113 1
 Z12 o-work work -2002 -explicit
 Z13 tExplicit 1 CvgOpt 0
@@ -36,12 +36,12 @@ Abehavioral
 R1
 R2
 R3
-Z14 DEx4 work 22 trafficlightcontroller 0 22 0;dUJT]0HWWIa[Ca7bhiZ1
-!i122 3
-l28
-L17 103
-VfmgJ49@4M@>gBm663Mzod2
-!s100 YnSeb9WYBoFbUim:7QcBz0
+DEx4 work 22 trafficlightcontroller 0 22 ::]E[?2ECRgmP@5hm1R8O3
+!i122 6
+l69
+L60 107
+VUU5536EzD_1^C[5:[1XG61
+!s100 _679E8L=11UgY4RFo7Wcn3
 R7
 32
 R8
@@ -49,6 +49,49 @@ R8
 R9
 R10
 R11
+!i113 1
+R12
+R13
+Etrafficlightcontroller_tb
+Z14 w1733553482
+R1
+R2
+R3
+!i122 7
+R4
+Z15 8D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd
+Z16 FD:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd
+l0
+L5 1
+Vf18e;Z;Z8XU`<E05>S3F83
+!s100 [KbJIDP^UZRIJlZc9bn4j0
+R7
+32
+R8
+!i10b 1
+R9
+Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd|
+!s107 D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd|
+!i113 1
+R12
+R13
+Abehavioral
+R1
+R2
+R3
+DEx4 work 25 trafficlightcontroller_tb 0 22 f18e;Z;Z8XU`<E05>S3F83
+!i122 7
+l76
+L8 124
+Vf5A0n46XIobTOT@Ez6E380
+!s100 1B9e6k>QAR5k8B_d8:I@X2
+R7
+32
+R8
+!i10b 1
+R9
+R17
+Z18 !s107 D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd|
 !i113 1
 R12
 R13

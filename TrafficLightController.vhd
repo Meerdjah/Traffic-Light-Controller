@@ -6,24 +6,65 @@ entity TrafficLightController is
     Port (
         clk      : in  STD_LOGIC;
         reset    : in  STD_LOGIC;
-        toggle   : in  STD_LOGIC;  -- Toggle input on/off
-        red      : out STD_LOGIC;
-        yellow   : out STD_LOGIC;
-        green    : out STD_LOGIC;
-        light_sel: out STD_LOGIC_VECTOR(1 downto 0)  -- Lampu mana yang nyala
+        toggle   : in  STD_LOGIC;
+
+        Pedestrian_Button : in  STD_LOGIC_VECTOR(3 downto 0); -- input tombol [Utara, Timur, Selatan, Barat]
+        Timer             : in  STD_LOGIC_VECTOR(7 downto 0); -- 8-bit timer input
+
+        -- north
+        red_north  : out STD_LOGIC;
+        yellow_north: out STD_LOGIC;
+        green_north: out STD_LOGIC;
+        green_left_north : out STD_LOGIC;
+        red_left_north   : out STD_LOGIC;
+
+        -- pedestrian north
+        green_pedestrian_north : out STD_LOGIC;
+        red_pedestrian_north   : out STD_LOGIC;
+
+        -- east
+        red_east   : out STD_LOGIC;
+        yellow_east: out STD_LOGIC;
+        green_east : out STD_LOGIC;
+        green_left_east  : out STD_LOGIC;
+        red_left_east    : out STD_LOGIC;
+
+        -- pedestrian east
+        green_pedestrian_east : out STD_LOGIC;
+        red_pedestrian_east   : out STD_LOGIC;
+
+        -- south
+        red_south  : out STD_LOGIC;
+        yellow_south: out STD_LOGIC;
+        green_south: out STD_LOGIC;
+        green_left_south : out STD_LOGIC;
+        red_left_south   : out STD_LOGIC;
+
+        -- pedestrian south
+        green_pedestrian_south : out STD_LOGIC;
+        red_pedestrian_south   : out STD_LOGIC;
+
+        -- west
+        red_west   : out STD_LOGIC;
+        yellow_west: out STD_LOGIC;
+        green_west : out STD_LOGIC;
+        green_left_west  : out STD_LOGIC;
+        red_left_west    : out STD_LOGIC;
+
+        -- pedestrian west
+        green_pedestrian_west : out STD_LOGIC;
+        red_pedestrian_west   : out STD_LOGIC
     );
 end TrafficLightController;
 
 architecture Behavioral of TrafficLightController is
 
-    type State_Type is (IDLE_STATE, RED_STATE, YELLOW_STATE, GREEN_STATE);
-    signal current_state, next_state: State_Type;
+    type State_Type is (IDLE_STATE, RED_STATE, YELLOW_STATE, GREEN_STATE, PEDESTRIAN_STATE);
+    signal previous_state, current_state, next_state: State_Type;
 
-    -- Buat bantu cek lampu mana yang nyala
     signal light_index : STD_LOGIC_VECTOR(1 downto 0) := "00";
-
-    -- Timing counter
-    signal counter : INTEGER range 0 to 50 := 0;
+    signal counter : INTEGER range 0 to 1 := 0;
+    signal pedestrian_counter : INTEGER range 0 to 255 := 0;
 
 begin
     process(clk, reset)
@@ -31,26 +72,36 @@ begin
         if reset = '1' then
             current_state <= IDLE_STATE;
             counter <= 0;
+            pedestrian_counter <= 0;
             light_index <= "00";
         elsif rising_edge(clk) then
             if toggle = '1' then
-                current_state <= next_state;
-                if current_state /= IDLE_STATE then
-                    if counter = 50 then
+                if current_state = PEDESTRIAN_STATE then
+                    if pedestrian_counter > 0 then
+                        pedestrian_counter <= pedestrian_counter - 1;
+                    else
+                        current_state <= next_state; -- Exit pedestrian state
+                    end if;
+                else
+                    if counter = 1 then
                         counter <= 0;
-                        light_index <= std_logic_vector(unsigned(light_index) + 1); -- Muter terus (Kalau udah '11', balik lagi ke '00')
+                        current_state <= next_state;
+
+                        if current_state = GREEN_STATE and next_state = RED_STATE then
+                            light_index <= std_logic_vector(unsigned(light_index) + 1);
+                        end if;
                     else
                         counter <= counter + 1;
                     end if;
                 end if;
             else
                 current_state <= IDLE_STATE;
-                counter <= 0;
             end if;
         end if;
     end process;
 
-    process(current_state, toggle, counter)
+    -- Transisi
+    process(current_state, Pedestrian_Button, light_index)
     begin
         case current_state is
             when IDLE_STATE =>
@@ -61,59 +112,55 @@ begin
                 end if;
 
             when RED_STATE =>
-                if counter = 50 then
+                -- Check untuk pedestrian button di arah lampu yang nyala
+                if Pedestrian_Button(to_integer(unsigned(light_index))) = '1' then
+                    next_state <= PEDESTRIAN_STATE;
+                else
+                    next_state <= YELLOW_STATE;
+                end if;
+
+            when YELLOW_STATE =>
+                if previous_state = RED_STATE then
                     next_state <= GREEN_STATE;
                 else
                     next_state <= RED_STATE;
                 end if;
 
             when GREEN_STATE =>
-                if counter = 50 then
-                    next_state <= YELLOW_STATE;
-                else
-                    next_state <= GREEN_STATE;
-                end if;
+                next_state <= YELLOW_STATE;
 
-            when YELLOW_STATE =>
-                if counter = 50 then
-                    next_state <= RED_STATE;
-                else
-                    next_state <= YELLOW_STATE;
-                end if;
+            when PEDESTRIAN_STATE =>
+                -- Stay distate ini sampai pedestrian_counter = 0
+                next_state <= RED_STATE;
 
             when others =>
                 next_state <= IDLE_STATE;
         end case;
     end process;
 
-    process(current_state, light_index)
+    process(current_state, light_index, pedestrian_counter)
     begin
-        -- Default
-        red <= '0';
-        yellow <= '0';
-        green <= '0';
-        light_sel <= light_index;
+        -- Default pedestrian: red
+        green_pedestrian_north <= '0'; red_pedestrian_north <= '1';
+        green_pedestrian_east  <= '0'; red_pedestrian_east  <= '1';
+        green_pedestrian_south <= '0'; red_pedestrian_south <= '1';
+        green_pedestrian_west  <= '0'; red_pedestrian_west  <= '1';
 
-        case current_state is
-            when IDLE_STATE =>
-                red <= '0';
-                yellow <= '0';
-                green <= '0';
-
-            when RED_STATE =>
-                red <= '1';
-
-            when GREEN_STATE =>
-                green <= '1';
-
-            when YELLOW_STATE =>
-                yellow <= '1';
-
-            when others =>
-                red <= '0';
-                yellow <= '0';
-                green <= '0';
-        end case;
+        -- Masuk ke pedestrian state, lampu pedestrian menyala
+        if current_state = PEDESTRIAN_STATE then
+            case light_index is
+                when "00" => -- North
+                    green_pedestrian_north <= '1'; red_pedestrian_north <= '0';
+                when "01" => -- East
+                    green_pedestrian_east <= '1'; red_pedestrian_east <= '0';
+                when "10" => -- South
+                    green_pedestrian_south <= '1'; red_pedestrian_south <= '0';
+                when "11" => -- West
+                    green_pedestrian_west <= '1'; red_pedestrian_west <= '0';
+                when others =>
+                    green_pedestrian_north <= '0'; red_pedestrian_north <= '1';
+            end case;
+        end if;
     end process;
 
 end Behavioral;
