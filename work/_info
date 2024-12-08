@@ -1,34 +1,32 @@
 m255
 K4
 z2
-!s11e MIXED_VERSIONS
 13
 !s112 1.1
 !i10d 8192
 !i10e 25
 !i10f 100
 cModel Technology
-dC:/intelFPGA/20.1
+dC:/intelFPGA/18.1
 Etrafficlightcontroller
-Z0 w1733551242
-Z1 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z0 w1733666998
+Z1 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
 Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
-Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 6
-Z4 dD:/College Material/Coding/PSD/FinPro
-Z5 8D:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd
-Z6 FD:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z4 dD:/ui/Semester 3/PSD/pinpro
+Z5 8D:/ui/Semester 3/PSD/pinpro/Traffic-Light-Controller-master/TrafficLightController.vhd
+Z6 FD:/ui/Semester 3/PSD/pinpro/Traffic-Light-Controller-master/TrafficLightController.vhd
 l0
-L5 1
-V::]E[?2ECRgmP@5hm1R8O3
-!s100 fojd9cBP?I0QAD8Ja6NZY1
-Z7 OV;C;2020.1;71
+L5
+VkE4V9ZcJEAg<3C;dJF4Rb2
+!s100 2H44kJ68D:D1B3OQ0MWV]1
+Z7 OV;C;10.5b;63
 32
-Z8 !s110 1733553583
+Z8 !s110 1733667004
 !i10b 1
-Z9 !s108 1733553583.000000
-Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|D:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd|
-Z11 !s107 D:/College Material/Coding/PSD/FinPro/TrafficLightController.vhd|
+Z9 !s108 1733667004.000000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|D:/ui/Semester 3/PSD/pinpro/Traffic-Light-Controller-master/TrafficLightController.vhd|
+Z11 !s107 D:/ui/Semester 3/PSD/pinpro/Traffic-Light-Controller-master/TrafficLightController.vhd|
 !i113 1
 Z12 o-work work -2002 -explicit
 Z13 tExplicit 1 CvgOpt 0
@@ -36,12 +34,11 @@ Abehavioral
 R1
 R2
 R3
-DEx4 work 22 trafficlightcontroller 0 22 ::]E[?2ECRgmP@5hm1R8O3
-!i122 6
-l69
-L60 107
-VUU5536EzD_1^C[5:[1XG61
-!s100 _679E8L=11UgY4RFo7Wcn3
+DEx4 work 22 trafficlightcontroller 0 22 kE4V9ZcJEAg<3C;dJF4Rb2
+l75
+L64
+V^@[O^35F8GK053JBD7^X81
+!s100 L@0YA;`;U@moe82UI=e;C2
 R7
 32
 R8
@@ -53,25 +50,24 @@ R11
 R12
 R13
 Etrafficlightcontroller_tb
-Z14 w1733553482
+Z14 w1733667724
 R1
 R2
 R3
-!i122 7
 R4
-Z15 8D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd
-Z16 FD:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd
+Z15 8D:\ui\Semester 3\PSD\pinpro\Traffic-Light-Controller-master\TrafficLightController_tb.vhd
+Z16 FD:\ui\Semester 3\PSD\pinpro\Traffic-Light-Controller-master\TrafficLightController_tb.vhd
 l0
-L5 1
+L5
 Vf18e;Z;Z8XU`<E05>S3F83
 !s100 [KbJIDP^UZRIJlZc9bn4j0
 R7
 32
-R8
+Z17 !s110 1733669163
 !i10b 1
-R9
-Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd|
-!s107 D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd|
+Z18 !s108 1733669163.000000
+Z19 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|D:\ui\Semester 3\PSD\pinpro\Traffic-Light-Controller-master\TrafficLightController_tb.vhd|
+Z20 !s107 D:\ui\Semester 3\PSD\pinpro\Traffic-Light-Controller-master\TrafficLightController_tb.vhd|
 !i113 1
 R12
 R13
@@ -79,19 +75,18 @@ Abehavioral
 R1
 R2
 R3
-DEx4 work 25 trafficlightcontroller_tb 0 22 f18e;Z;Z8XU`<E05>S3F83
-!i122 7
-l76
-L8 124
-Vf5A0n46XIobTOT@Ez6E380
-!s100 1B9e6k>QAR5k8B_d8:I@X2
+Z21 DEx4 work 25 trafficlightcontroller_tb 0 22 f18e;Z;Z8XU`<E05>S3F83
+l94
+L8
+Z22 V_TER_7HZV2PMcJUAXT[Dh0
+Z23 !s100 1?efEAmV?J^BIjmZQiGac1
 R7
 32
-R8
-!i10b 1
-R9
 R17
-Z18 !s107 D:/College Material/Coding/PSD/FinPro/TrafficLightController_tb.vhd|
+!i10b 1
+R18
+R19
+R20
 !i113 1
 R12
 R13
