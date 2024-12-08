@@ -1,13 +1,22 @@
-{C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController_tb.vhd}
+{C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd} {0 {vcom -work work -2002 -explicit -stats=none {C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd}
 Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
--- Compiling entity TrafficLightController_tb
--- Compiling architecture Behavioral of TrafficLightController_tb
+-- Compiling entity TrafficLightController
+-- Compiling architecture Behavioral of TrafficLightController
+** Error: C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd(63): Nonresolved signal 'pedestrian_timer' has multiple sources.
+  Drivers:
+    C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd(98):Process line__98
+       Driven at:
+          C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd(134)
+    C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd(67):Process line__67
+       Driven at:
+          C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd(74)
+** Note: C:/Wiellona/UI/Kuliah/Sem 3/PSD/Praktikum/Finpro/Traffic-Light-Controller/TrafficLightController.vhd(232): VHDL Compiler exiting
 
-} {} {}} {.\TrafficLightController.vhd} {1 {vcom -work work -2002 -explicit -stats=none {.\TrafficLightController.vhd}
+} {9.0 10.0} {}} {.\TrafficLightController.vhd} {1 {vcom -work work -2002 -explicit -stats=none {.\TrafficLightController.vhd}
 Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
 -- Loading package STANDARD
 -- Loading package TEXTIO
