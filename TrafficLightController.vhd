@@ -8,17 +8,21 @@ entity TrafficLightController is
         reset    : in  STD_LOGIC;
         toggle   : in  STD_LOGIC;
 
-        Pedestrian_Button : in  STD_LOGIC_VECTOR(3 downto 0); -- input tombol [Utara, Timur, Selatan, Barat]
-        Timer             : in  STD_LOGIC_VECTOR(7 downto 0); -- 8-bit timer input
+        Pedestrian_button_north : in  STD_LOGIC;
+        Pedestrian_button_east  : in  STD_LOGIC;
+        Pedestrian_button_south : in  STD_LOGIC;
+        Pedestrian_button_west  : in  STD_LOGIC;
 
-        -- north
+        Timer   : in  STD_LOGIC_VECTOR(7 downto 0); -- 8-bit timer input
+
+        -- Utara
         red_north  : out STD_LOGIC;
         yellow_north: out STD_LOGIC;
         green_north: out STD_LOGIC;
         green_left_north : out STD_LOGIC;
         red_left_north   : out STD_LOGIC;
 
-        -- pedestrian north
+        -- pedestrian Utara
         green_pedestrian_north : out STD_LOGIC;
         red_pedestrian_north   : out STD_LOGIC;
 
@@ -64,49 +68,43 @@ architecture Behavioral of TrafficLightController is
 
     signal light_index : STD_LOGIC_VECTOR(1 downto 0) := "00";
     signal counter : INTEGER range 0 to 1 := 0;
-    signal pedestrian_counter : INTEGER range 0 to 255 := 0;
+
+    -- Timer for pedestrian green light
+    signal pedestrian_timer : INTEGER range 0 to 255 := 0; -- Max duration for pedestrian light (in clock cycles)
 
 begin
-    -- Main Process
+    -- Proses utama untuk transisi state dan perubahan arah
     process(clk, reset)
     begin
         if reset = '1' then
             current_state <= IDLE_STATE;
             previous_state <= IDLE_STATE;
             counter <= 0;
-            pedestrian_counter <= 0;
             light_index <= "00";
         elsif rising_edge(clk) then
             if toggle = '1' then
-                if current_state = PEDESTRIAN_STATE then
-                    if pedestrian_counter > 0 then
-                        pedestrian_counter <= pedestrian_counter + 1;
-                    else
-                        previous_state <= current_state;
-                        current_state <= next_state; -- Exit pedestrian state
+                if counter = 1 then
+                    counter <= 0;
+                    previous_state <= current_state; -- menyimpan state sebelumnya
+                    current_state <= next_state;
+
+                    -- Pergantian arah setelah siklus penuh
+                    if current_state = GREEN_STATE and next_state = RED_STATE then
+                        light_index <= std_logic_vector(unsigned(light_index) + 1);
                     end if;
                 else
-                    if counter = 1 then
-                        counter <= 0;
-                        previous_state <= current_state;
-                        current_state <= next_state;
-
-                        if current_state = GREEN_STATE and next_state = RED_STATE then
-                            light_index <= std_logic_vector(unsigned(light_index) + 1);
-                        end if;
-                    else
-                        counter <= counter + 1;
-                    end if;
+                    counter <= counter + 1;
                 end if;
             else
-                previous_state <= current_state;
                 current_state <= IDLE_STATE;
+                previous_state <= IDLE_STATE;
+                counter <= 0;
             end if;
         end if;
     end process;
 
-    -- Transisi
-    process(previous_state, current_state, Pedestrian_Button, light_index)
+    -- Proses untuk transisi state
+    process(previous_state, current_state, Pedestrian_button_north, Pedestrian_button_south, Pedestrian_button_west, Pedestrian_button_east, Timer)
     begin
         case current_state is
             when IDLE_STATE =>
@@ -117,8 +115,14 @@ begin
                 end if;
 
             when RED_STATE =>
-                -- Check untuk pedestrian button di arah lampu yang nyala
-                if Pedestrian_Button(to_integer(unsigned(light_index))) = '1' then
+                -- Jika tombol pedestrian ditekan, masuk ke state pedestrian
+                if Pedestrian_button_north = '1' then
+                    next_state <= PEDESTRIAN_STATE;
+                elsif Pedestrian_button_south = '1' then
+                    next_state <= PEDESTRIAN_STATE;
+                elsif Pedestrian_button_west = '1' then
+                    next_state <= PEDESTRIAN_STATE;
+                elsif Pedestrian_button_east = '1' then
                     next_state <= PEDESTRIAN_STATE;
                 else
                     next_state <= YELLOW_STATE;
@@ -135,56 +139,65 @@ begin
                 next_state <= YELLOW_STATE;
 
             when PEDESTRIAN_STATE =>
-                -- Stay distate ini sampai pedestrian_counter = 0
-                next_state <= RED_STATE;
+                -- Timer untuk pedestrian hanya diatur di sini
+                pedestrian_timer <= to_integer(unsigned(Timer)); -- Mengambil nilai dari input Timer
+                if pedestrian_timer = 0 then
+                    next_state <= RED_STATE; -- Kembali ke RED state setelah pedestrian selesai
+                end if;
 
             when others =>
                 next_state <= IDLE_STATE;
         end case;
     end process;
 
-    -- Output
-    process(current_state, light_index, pedestrian_counter)
+    -- Output logic
+    process(current_state, light_index, Pedestrian_button_north, Pedestrian_button_south, Pedestrian_button_west, Pedestrian_button_east)
     begin
-        -- Default lampu merah
+        -- Default semua lampu merah
         red_north <= '1'; yellow_north <= '0'; green_north <= '0';
         red_east  <= '1'; yellow_east  <= '0'; green_east  <= '0';
         red_south <= '1'; yellow_south <= '0'; green_south <= '0';
         red_west  <= '1'; yellow_west  <= '0'; green_west  <= '0';
 
-        -- Default lampu pedestrian
-        green_pedestrian_north <= '0'; red_pedestrian_north <= '1';
-        green_pedestrian_east  <= '0'; red_pedestrian_east  <= '1';
-        green_pedestrian_south <= '0'; red_pedestrian_south <= '1';
-        green_pedestrian_west  <= '0'; red_pedestrian_west <= '1';
-
-        -- Default lampu kiri
+        -- Default semua lampu belok kiri
         green_left_north <= '0'; red_left_north  <= '1';
         green_left_east  <= '0'; red_left_east   <= '1';
         green_left_south <= '0'; red_left_south  <= '1';
         green_left_west  <= '0'; red_left_west  <= '1';
 
-        if current_state = PEDESTRIAN_STATE then
-            case light_index is
-                when "00" => -- Utara
-                    green_pedestrian_north <= '1'; red_pedestrian_north <= '0';
+        -- Default lampu pedestrian merah
+        green_pedestrian_north <= '0'; red_pedestrian_north <= '1';
+        green_pedestrian_east  <= '0'; red_pedestrian_east  <= '1';
+        green_pedestrian_south <= '0'; red_pedestrian_south <= '1';
+        green_pedestrian_west  <= '0'; red_pedestrian_west <= '1';
 
-                when "01" => -- Timur
-                    green_pedestrian_east <= '1'; red_pedestrian_east <= '0';
+        -- Logika untuk lampu pedestrian green
+        if Pedestrian_button_north = '1' then
+            green_pedestrian_north <= '1';
+            red_pedestrian_north <= '0';
+        end if;
 
-                when "10" => -- Selatan
-                    green_pedestrian_south <= '1'; red_pedestrian_south <= '0';
+        if Pedestrian_button_east = '1' then
+            green_pedestrian_east <= '1';
+            red_pedestrian_east <= '0';
+        end if;
 
-                when "11" => -- Barat
-                    green_pedestrian_west <= '1'; red_pedestrian_west <= '0';
-            end case;
-        else
-            case light_index is
+        if Pedestrian_button_south = '1' then
+            green_pedestrian_south <= '1';
+            red_pedestrian_south <= '0';
+        end if;
+
+        if Pedestrian_button_west = '1' then
+            green_pedestrian_west <= '1';
+            red_pedestrian_west <= '0';
+        end if;
+
+        -- Lampu untuk arah yang aktif
+        case light_index is
             when "00" => -- Utara
                 if current_state = GREEN_STATE then
                     red_north <= '0'; green_north <= '1';
                     green_left_north <= '1'; red_left_north <= '0';
-                    green_left_east  <= '1'; red_left_east  <= '0';
                 elsif current_state = YELLOW_STATE then
                     red_north <= '0'; yellow_north <= '1';
                 end if;
@@ -193,7 +206,6 @@ begin
                 if current_state = GREEN_STATE then
                     red_east <= '0'; green_east <= '1';
                     green_left_east  <= '1'; red_left_east  <= '0';
-                    green_left_south <= '1'; red_left_south <= '0';
                 elsif current_state = YELLOW_STATE then
                     red_east <= '0'; yellow_east <= '1';
                 end if;
@@ -202,7 +214,6 @@ begin
                 if current_state = GREEN_STATE then
                     red_south <= '0'; green_south <= '1';
                     green_left_south <= '1'; red_left_south <= '0';
-                    green_left_west  <= '1'; red_left_west  <= '0';
                 elsif current_state = YELLOW_STATE then
                     red_south <= '0'; yellow_south <= '1';
                 end if;
@@ -211,7 +222,6 @@ begin
                 if current_state = GREEN_STATE then
                     red_west <= '0'; green_west <= '1';
                     green_left_west  <= '1'; red_left_west  <= '0';
-                    green_left_north <= '1'; red_left_north <= '0';
                 elsif current_state = YELLOW_STATE then
                     red_west <= '0'; yellow_west <= '1';
                 end if;
@@ -226,7 +236,6 @@ begin
                 green_left_east  <= '0'; red_left_east   <= '1';
                 green_left_south <= '0'; red_left_south  <= '1';
                 green_left_west  <= '0'; red_left_west  <= '1';
-            end case;
-        end if;
+        end case;
     end process;
 end Behavioral;
